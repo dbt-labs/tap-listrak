@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "OpenDate": {
+      "type": "string"
+    },
+    "EmailAddress": {
+      "type": "string"
+    },
+    "ContactID": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

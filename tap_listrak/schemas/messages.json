@@ -1,0 +1,64 @@
+{
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "ClickCount": {
+      "type": "integer"
+    },
+    "SendDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "OrderTotal": {
+      "type": "number"
+    },
+    "RemovePercent": {
+      "type": "number"
+    },
+    "RemoveCount": {
+      "type": "integer"
+    },
+    "ClickerPercent": {
+      "type": "number"
+    },
+    "DeliverCount": {
+      "type": "integer"
+    },
+    "ReadCount": {
+      "type": "integer"
+    },
+    "Subject": {
+      "type": "string"
+    },
+    "ConversionCount": {
+      "type": "integer"
+    },
+    "ListID": {
+      "type": "integer"
+    },
+    "NewClickerCount": {
+      "type": "integer"
+    },
+    "OpenCount": {
+      "type": "integer"
+    },
+    "OpenPercent": {
+      "type": "number"
+    },
+    "RepeatClickerCount": {
+      "type": "integer"
+    },
+    "MsgID": {
+      "type": "integer"
+    },
+    "ClickerCount": {
+      "type": "integer"
+    },
+    "ReadPercent": {
+      "type": "number"
+    },
+    "AverageOrderValue": {
+      "type": "number"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "EmailAddress": {
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

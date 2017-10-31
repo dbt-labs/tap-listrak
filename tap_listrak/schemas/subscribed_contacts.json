@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "AdditionDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "EmailAddress": {
+      "type": "string"
+    },
+    "AdditionMethod": {
+      "type": "string"
+    },
+    "ContactID": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "properties": {
+    "ContactID": {
+      "type": "string"
+    },
+    "EmailAddress": {
+      "type": "string"
+    },
+    "LinkUrl": {
+      "type": "string"
+    },
+    "ClickDate": {
+      "type": "string"
+    },
+    "LinkDescription": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

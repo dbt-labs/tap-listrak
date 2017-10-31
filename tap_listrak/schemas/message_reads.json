@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "ReadDate": {
+      "type": "string"
+    },
+    "EmailAddress": {
+      "type": "string"
+    },
+    "ContactID": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
