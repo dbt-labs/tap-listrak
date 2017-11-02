@@ -2,7 +2,10 @@
   "additionalProperties": false,
   "properties": {
     "EmailAddress": {
-      "type": "string"
+      "type": [
+        "null",
+        "string"
+      ]
     }
   },
   "type": "object"

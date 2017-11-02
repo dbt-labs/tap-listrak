@@ -2,19 +2,34 @@
   "type": "object",
   "properties": {
     "ContactID": {
-      "type": "string"
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "EmailAddress": {
-      "type": "string"
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "LinkUrl": {
-      "type": "string"
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "ClickDate": {
-      "type": "string"
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "LinkDescription": {
-      "type": "string"
+      "type": [
+        "null",
+        "string"
+      ]
     }
   },
   "additionalProperties": false

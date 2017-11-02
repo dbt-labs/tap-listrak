@@ -2,13 +2,22 @@
   "type": "object",
   "properties": {
     "ReadDate": {
-      "type": "string"
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "EmailAddress": {
-      "type": "string"
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "ContactID": {
-      "type": "string"
+      "type": [
+        "null",
+        "string"
+      ]
     }
   },
   "additionalProperties": false

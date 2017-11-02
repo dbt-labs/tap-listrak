@@ -3,17 +3,29 @@
   "additionalProperties": false,
   "properties": {
     "AdditionDate": {
-      "type": "string",
+      "type": [
+        "null",
+        "string"
+      ],
       "format": "date-time"
     },
     "EmailAddress": {
-      "type": "string"
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "AdditionMethod": {
-      "type": "string"
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "ContactID": {
-      "type": "string"
+      "type": [
+        "null",
+        "string"
+      ]
     }
   }
 }
