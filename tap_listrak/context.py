@@ -1,3 +1,4 @@
+from datetime import datetime, date
 import pendulum
 import singer
 from singer import bookmarks as bks_
@@ -24,6 +25,7 @@ class Context(object):
         self.selected_stream_ids = None
         self.schema_dicts = None
         self.cache = {}
+        self.now = datetime.utcnow()
 
     @property
     def catalog(self):
@@ -45,6 +47,8 @@ class Context(object):
         return bks_.get_bookmark(self.state, *path)
 
     def set_bookmark(self, path, val):
+        if isinstance(val, date):
+            val = val.isoformat()
         bks_.write_bookmark(self.state, path[0], path[1], val)
 
     def get_offset(self, path):

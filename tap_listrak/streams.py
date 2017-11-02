@@ -5,21 +5,22 @@ import singer
 from singer.utils import strftime
 from . import schemas
 from .schemas import IDS
+from .http import request
 
 LOGGER = singer.get_logger()
 
 
-def gen_intervals(ctx, start_dt):
-    now = datetime.utcnow()
+def gen_intervals(ctx, start_str):
+    start_dt = pendulum.parse(start_str)
     interval = timedelta(days=ctx.config.get("interval_days", 60))
-    while start_dt < now:
-        end_dt = min(start_dt + interval, now)
+    while start_dt < ctx.now:
+        end_dt = min(start_dt + interval, ctx.now)
         yield start_dt, end_dt
         start_dt = end_dt
 
 
 def gen_pages():
-    page = 0
+    page = 1
     while True:
         yield page
         page += 1
@@ -56,50 +57,84 @@ def transform(response):
     return transform_dts(serialize_object(response))
 
 
-# class SubscribedContacts(Stream):
-#     def sync(self, ctx):
-#         fn = ctx.client.service.ReportSubscribedContacts
-#         for lst in ctx.cache["lists"]:
-#             for page in gen_pages():
-#                 response = fn(ListID=lst["ListID"], Page=page)
-#                 records = response["ReportSubscribedContactsResult"]
-#                 if not records:
-#                     break
-#                 self.write_records(self.transform(ctx, records))
+def add_list_id(lst, records):
+    for record in records:
+        record["ListID"] = lst["ListID"]
+    return records
 
 
-# class MessageClicks(Stream):
-#     def sync(self, ctx, messages):
-#         for msg in messages:
-#             for start_dt, end_dt in gen_intervals(ctx, start_dt):
-#                 for page in gen_pages():
-#                     pass
-#             # ctx.client.service.ReportRangeMessageContactClick(MsgID=msg["MsgID"],
+def add_msg_id(msg, records):
+    for record in records:
+        record["MsgID"] = msg["MsgID"]
+    return records
 
 
-# message_clicks = MessageClicks("message_clicks", [""])
+class BOOK(object):
+    SUBSCRIBED_CONTACTS = [IDS.SUBSCRIBED_CONTACTS, "AdditionDate"]
+    MESSAGE_CLICKS = [IDS.MESSAGE_CLICKS, "ClickDate"]
+
+
+def sync_subscribed_contacts(ctx, lists):
+    start_dt = ctx.update_start_date_bookmark(BOOK.SUBSCRIBED_CONTACTS)
+    for lst in lists:
+        for page in gen_pages():
+            response = request(IDS.SUBSCRIBED_CONTACTS,
+                               ctx.client.service.ReportRangeSubscribedContacts,
+                               ListID=lst["ListID"],
+                               StartDate=start_dt,
+                               EndDate=ctx.now,
+                               Page=page)
+            if not response:
+                break
+            contacts = add_list_id(lst, transform(response))
+            write_records(IDS.SUBSCRIBED_CONTACTS, contacts)
+    ctx.set_bookmark(BOOK.SUBSCRIBED_CONTACTS, ctx.now)
+    ctx.write_state()
+
+
+def sync_message_clicks(ctx, messages):
+    start_dt = ctx.update_start_date_bookmark(BOOK.MESSAGE_CLICKS)
+    for msg in messages:
+        for page in gen_pages():
+            response = request(IDS.MESSAGE_CLICKS,
+                               ctx.client.service.ReportRangeMessageContactClick,
+                               MsgID=msg["MsgID"],
+                               StartDate=start_dt,
+                               EndDate=ctx.now,
+                               Page=page)
+            if not response:
+                break
+            clicks = add_msg_id(msg, transform(response))
+            write_records(IDS.MESSAGE_CLICKS, clicks)
 
 
 def sync_messages(ctx, lists):
-    fn = ctx.client.service.ReportListMessageActivity
-    start_dt = pendulum.parse(ctx.config["start_date"])
+    start_dt = ctx.config["start_date"]
     for lst in lists:
         for begin_dt, end_dt in gen_intervals(ctx, start_dt):
-            response = fn(ListID=lst["ListID"],
-                          StartDate=begin_dt,
-                          EndDate=end_dt,
-                          IncludeTestMessages=True)
-            actresult = response["ReportListMessageActivityResult"]
-            if not actresult:
+            response = request(IDS.MESSAGES,
+                               ctx.client.service.ReportListMessageActivity,
+                               ListID=lst["ListID"],
+                               StartDate=begin_dt,
+                               EndDate=end_dt,
+                               IncludeTestMessages=True)
+            act_result = response["ReportListMessageActivityResult"]
+            if not act_result:
                 continue
-            messages = transform(actresult["WSMessageActivity"])
+            messages = transform(act_result["WSMessageActivity"])
             write_records(IDS.MESSAGES, messages)
-            # message_clicks.sync(ctx, messages)
+            if IDS.MESSAGE_CLICKS in ctx.selected_stream_ids:
+                sync_message_clicks(ctx, messages)
+    if IDS.MESSAGE_CLICKS in ctx.selected_stream_ids:
+        ctx.set_bookmark(BOOK.MESSAGE_CLICKS, ctx.now)
+    ctx.write_state()
 
 
 def sync_lists(ctx):
-    schemas.load_and_write_schema(IDS.LISTS)
-    response = ctx.client.service.GetContactListCollection()
+    response = request(IDS.LISTS, ctx.client.service.GetContactListCollection)
     lists = transform(response)
-    # write_records(IDS.LISTS, lists)
-    sync_messages(ctx, lists)
+    write_records(IDS.LISTS, lists)
+    if IDS.MESSAGES in ctx.selected_stream_ids:
+        sync_messages(ctx, lists)
+    if IDS.SUBSCRIBED_CONTACTS in ctx.selected_stream_ids:
+        sync_subscribed_contacts(ctx, lists)

@@ -7,6 +7,8 @@ from singer import utils
 class IDS(object):
     LISTS = "lists"
     MESSAGES = "messages"
+    MESSAGE_CLICKS = "message_clicks"
+    SUBSCRIBED_CONTACTS = "subscribed_contacts"
 
 stream_ids = [getattr(IDS, x) for x in dir(IDS)
               if not x.startswith("__")]
@@ -14,6 +16,8 @@ stream_ids = [getattr(IDS, x) for x in dir(IDS)
 PK_FIELDS = {
     IDS.LISTS: ["ListID"],
     IDS.MESSAGES: ["MsgID"],
+    IDS.MESSAGE_CLICKS: ["MsgID", "ContactID"],
+    IDS.SUBSCRIBED_CONTACTS: ["ListID", "ContactID"],
 }
 
 

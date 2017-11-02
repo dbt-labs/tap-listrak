@@ -23,8 +23,12 @@
     },
     "ContactID": {
       "type": [
-        "null",
         "string"
+      ]
+    },
+    "ListID": {
+      "type": [
+        "integer"
       ]
     }
   }
