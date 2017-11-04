@@ -8,6 +8,9 @@ class IDS(object):
     LISTS = "lists"
     MESSAGES = "messages"
     MESSAGE_CLICKS = "message_clicks"
+    MESSAGE_OPENS = "message_opens"
+    MESSAGE_READS = "message_reads"
+    MESSAGE_SENDS = "message_sends"
     SUBSCRIBED_CONTACTS = "subscribed_contacts"
 
 stream_ids = [getattr(IDS, x) for x in dir(IDS)
@@ -16,7 +19,10 @@ stream_ids = [getattr(IDS, x) for x in dir(IDS)
 PK_FIELDS = {
     IDS.LISTS: ["ListID"],
     IDS.MESSAGES: ["MsgID"],
-    IDS.MESSAGE_CLICKS: ["MsgID", "ContactID"],
+    IDS.MESSAGE_CLICKS: ["MsgID", "EmailAddress"],
+    IDS.MESSAGE_OPENS: ["MsgID", "EmailAddress"],
+    IDS.MESSAGE_READS: ["MsgID", "EmailAddress"],
+    IDS.MESSAGE_SENDS: ["MsgID", "EmailAddress"],
     IDS.SUBSCRIBED_CONTACTS: ["ListID", "ContactID"],
 }
 

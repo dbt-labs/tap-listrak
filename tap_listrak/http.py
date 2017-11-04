@@ -13,8 +13,6 @@ def get_client(config):
 
 
 def request(tap_stream_id, service_fn, **kwargs):
-    import sys
-    print(service_fn, kwargs, file=sys.stderr)
     with metrics.http_request_timer(tap_stream_id) as timer:
         response = service_fn(**kwargs)
         timer.tags[metrics.Tag.http_status_code] = 200

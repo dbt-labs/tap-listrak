@@ -1,3 +1,4 @@
+from collections import namedtuple
 from datetime import datetime, timedelta, date, timezone
 import pendulum
 from zeep.helpers import serialize_object
@@ -72,6 +73,9 @@ def add_msg_id(msg, records):
 class BOOK(object):
     SUBSCRIBED_CONTACTS = [IDS.SUBSCRIBED_CONTACTS, "AdditionDate"]
     MESSAGE_CLICKS = [IDS.MESSAGE_CLICKS, "ClickDate"]
+    MESSAGE_OPENS = [IDS.MESSAGE_OPENS, "OpenDate"]
+    MESSAGE_READS = [IDS.MESSAGE_READS, "ReadDate"]
+    MESSAGE_SENDS = [IDS.MESSAGE_SENDS, "SendDate"]
 
 
 def sync_subscribed_contacts(ctx, lists):
@@ -91,25 +95,74 @@ def sync_subscribed_contacts(ctx, lists):
     ctx.set_bookmark(BOOK.SUBSCRIBED_CONTACTS, ctx.now)
     ctx.write_state()
 
+SubStream = namedtuple("SubStream", ("tap_stream_id", "bookmark", "endpoint"))
+MESSAGE_SUB_STREAMS = [
+    SubStream(IDS.MESSAGE_CLICKS, BOOK.MESSAGE_CLICKS, "ReportRangeMessageContactClick"),
+    SubStream(IDS.MESSAGE_OPENS, BOOK.MESSAGE_OPENS, "ReportRangeMessageContactOpen"),
+    SubStream(IDS.MESSAGE_READS, BOOK.MESSAGE_READS, "ReportRangeMessageContactRead"),
+]
 
-def sync_message_clicks(ctx, messages):
-    start_dt = ctx.update_start_date_bookmark(BOOK.MESSAGE_CLICKS)
+
+def sync_message_sub_stream(ctx, messages, sub_stream):
+    start_dt = ctx.update_start_date_bookmark(sub_stream.bookmark)
     for msg in messages:
         for page in gen_pages():
-            response = request(IDS.MESSAGE_CLICKS,
-                               ctx.client.service.ReportRangeMessageContactClick,
+            response = request(sub_stream.tap_stream_id,
+                               getattr(ctx.client.service, sub_stream.endpoint),
                                MsgID=msg["MsgID"],
                                StartDate=start_dt,
                                EndDate=ctx.now,
                                Page=page)
             if not response:
                 break
-            clicks = add_msg_id(msg, transform(response))
-            write_records(IDS.MESSAGE_CLICKS, clicks)
+            records = add_msg_id(msg, transform(response))
+            write_records(sub_stream.tap_stream_id, records)
+
+
+def sync_sub_streams(ctx, messages):
+    for sub_stream in MESSAGE_SUB_STREAMS:
+        if sub_stream.tap_stream_id in ctx.selected_stream_ids:
+            sync_message_sub_stream(ctx, messages, sub_stream)
+
+
+def sync_message_sends_if_selected(ctx, messages):
+    if not IDS.MESSAGE_SENDS in ctx.selected_stream_ids:
+        return
+    start_dt = ctx.update_start_date_bookmark(BOOK.MESSAGE_SENDS)
+    for msg in messages:
+        if pendulum.parse(msg["SendDate"]) < start_dt:
+            continue
+        for page in gen_pages():
+            response = request(IDS.MESSAGE_SENDS,
+                               ctx.client.service.ReportMessageContactSent,
+                               MsgID=msg["MsgID"],
+                               Page=page)
+            sent_result = response["ReportMessageContactSentResult"]
+            if not sent_result:
+                break
+            records = add_msg_id(msg, transform(sent_result["WSMessageRecipient"]))
+            write_records(IDS.MESSAGE_SENDS, records)
+
+
+def update_sub_stream_bookmarks(ctx):
+    for sub_stream in MESSAGE_SUB_STREAMS:
+        if sub_stream.tap_stream_id in ctx.selected_stream_ids:
+            ctx.set_bookmark(sub_stream.bookmark, ctx.now)
+
+
+def update_message_sends_bookmark(ctx, max_send_dt):
+    if IDS.MESSAGE_SENDS in ctx.selected_stream_ids and max_send_dt:
+        ctx.set_bookmark(BOOK.MESSAGE_SENDS, max_send_dt)
+
+
+def new_max_send_dt(messages, old_max):
+    max_this_batch = max(m["SendDate"] for m in messages)
+    return max(max_this_batch, old_max) if old_max else max_this_batch
 
 
 def sync_messages(ctx, lists):
     start_dt = ctx.config["start_date"]
+    max_send_dt = None
     for lst in lists:
         for begin_dt, end_dt in gen_intervals(ctx, start_dt):
             response = request(IDS.MESSAGES,
@@ -123,10 +176,11 @@ def sync_messages(ctx, lists):
                 continue
             messages = transform(act_result["WSMessageActivity"])
             write_records(IDS.MESSAGES, messages)
-            if IDS.MESSAGE_CLICKS in ctx.selected_stream_ids:
-                sync_message_clicks(ctx, messages)
-    if IDS.MESSAGE_CLICKS in ctx.selected_stream_ids:
-        ctx.set_bookmark(BOOK.MESSAGE_CLICKS, ctx.now)
+            max_send_dt = new_max_send_dt(messages, max_send_dt)
+            sync_sub_streams(ctx, messages)
+            sync_message_sends_if_selected(ctx, messages)
+    update_sub_stream_bookmarks(ctx)
+    update_message_sends_bookmark(ctx, max_send_dt)
     ctx.write_state()
 
 
