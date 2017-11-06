@@ -23,7 +23,6 @@ class Context(object):
         self.client = get_client(config)
         self._catalog = None
         self.selected_stream_ids = None
-        self.schema_dicts = None
         self.cache = {}
         self.now = datetime.utcnow()
 
@@ -38,10 +37,6 @@ class Context(object):
             [s.tap_stream_id for s in catalog.streams
              if s.is_selected()]
         )
-        self.schema_dicts = {
-            stream.tap_stream_id: stream.schema.to_dict()
-            for stream in catalog.streams
-        }
 
     def get_bookmark(self, path):
         return bks_.get_bookmark(self.state, *path)
