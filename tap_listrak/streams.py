@@ -13,7 +13,7 @@ LOGGER = singer.get_logger()
 
 def gen_intervals(ctx, start_str):
     start_dt = pendulum.parse(start_str)
-    interval = timedelta(days=ctx.config.get("interval_days", 60))
+    interval = timedelta(days=ctx.config.get("interval_days", 365))
     while start_dt < ctx.now:
         end_dt = min(start_dt + interval, ctx.now)
         yield start_dt, end_dt
