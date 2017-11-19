@@ -1,0 +1,458 @@
+{
+  "streams": [
+    {
+      "tap_stream_id": "lists",
+      "key_properties": [
+        "ListID"
+      ],
+      "schema": {
+        "properties": {
+          "ListID": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "EnableGoogleAnalytics": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "GoogleTrackingDomains": {
+            "items": {
+              "inclusion": "automatic",
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "array"
+            ]
+          },
+          "EnableInternationalization": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "ListName": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "bounceHandling": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "CreateDate": {
+            "inclusion": "automatic",
+            "format": "date-time",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "ShowEmailList": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "BounceUnsubscribeCount": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "EnableRSS": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "Vmta": {
+            "properties": {
+              "Description": {
+                "inclusion": "automatic",
+                "type": [
+                  "null",
+                  "string"
+                ]
+              },
+              "VmtaID": {
+                "inclusion": "automatic",
+                "type": [
+                  "null",
+                  "integer"
+                ]
+              }
+            },
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "object"
+            ]
+          },
+          "EnableDoubleOptin": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "EnableListHygiene": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "DomainAliasLink": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "EnableListRemoveHeader": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "EnableDynamicContent": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "EnableBrowserLink": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "EnableRemovalLink": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "FromName": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "FromEmail": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "ShowAdvancedPersonalization": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "DomainAliasEmail": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        },
+        "inclusion": "automatic",
+        "type": "object"
+      },
+      "stream": "lists"
+    },
+    {
+      "tap_stream_id": "messages",
+      "key_properties": [
+        "MsgID"
+      ],
+      "schema": {
+        "properties": {
+          "ClickCount": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "SendDate": {
+            "inclusion": "automatic",
+            "format": "date-time",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "OrderTotal": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "RemovePercent": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "RemoveCount": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "ClickerPercent": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "DeliverCount": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "ReadCount": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "Subject": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "ConversionCount": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "ListID": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "NewClickerCount": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "OpenCount": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "OpenPercent": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "RepeatClickerCount": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "MsgID": {
+            "inclusion": "automatic",
+            "type": [
+              "integer"
+            ]
+          },
+          "ClickerCount": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "ReadPercent": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "AverageOrderValue": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "number"
+            ]
+          }
+        },
+        "inclusion": "automatic",
+        "type": "object"
+      },
+      "stream": "messages"
+    },
+    {
+      "tap_stream_id": "message_bounces",
+      "key_properties": [
+        "MsgID",
+        "EmailAddress"
+      ],
+      "schema": {
+        "properties": {
+          "MsgID": {
+            "inclusion": "automatic",
+            "type": [
+              "integer"
+            ]
+          },
+          "ContactID": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "EmailAddress": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "BounceReasons": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "BounceDetails": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "BounceDate": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "BounceCount": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "integer"
+            ]
+          }
+        },
+        "inclusion": "automatic",
+        "type": "object"
+      },
+      "stream": "message_bounces"
+    },
+    {
+      "tap_stream_id": "message_unsubs",
+      "key_properties": [
+        "MsgID",
+        "EmailAddress"
+      ],
+      "schema": {
+        "properties": {
+          "MsgID": {
+            "inclusion": "automatic",
+            "type": [
+              "integer"
+            ]
+          },
+          "ContactID": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "EmailAddress": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "AdditionDate": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "RemovalDate": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "RemovalMethod": {
+            "inclusion": "automatic",
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        },
+        "inclusion": "automatic",
+        "type": "object"
+      },
+      "stream": "message_unsubs"
+    }
+  ]
+}

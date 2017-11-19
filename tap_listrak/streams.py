@@ -73,6 +73,8 @@ def add_msg_id(msg, records):
 class BOOK(object):
     SUBSCRIBED_CONTACTS = [IDS.SUBSCRIBED_CONTACTS, "AdditionDate"]
     MESSAGE_CLICKS = [IDS.MESSAGE_CLICKS, "ClickDate"]
+    MESSAGE_UNSUBS = [IDS.MESSAGE_UNSUBS, "RemovalDate"]
+    MESSAGE_BOUNCES = [IDS.MESSAGE_UNSUBS, "BounceDate"]
     MESSAGE_OPENS = [IDS.MESSAGE_OPENS, "OpenDate"]
     MESSAGE_READS = [IDS.MESSAGE_READS, "ReadDate"]
     MESSAGE_SENDS = [IDS.MESSAGE_SENDS, "SendDate"]
@@ -100,6 +102,8 @@ MESSAGE_SUB_STREAMS = [
     SubStream(IDS.MESSAGE_CLICKS, BOOK.MESSAGE_CLICKS, "ReportRangeMessageContactClick"),
     SubStream(IDS.MESSAGE_OPENS, BOOK.MESSAGE_OPENS, "ReportRangeMessageContactOpen"),
     SubStream(IDS.MESSAGE_READS, BOOK.MESSAGE_READS, "ReportRangeMessageContactRead"),
+    SubStream(IDS.MESSAGE_UNSUBS, BOOK.MESSAGE_UNSUBS, "ReportRangeMessageContactRemoval"),
+    SubStream(IDS.MESSAGE_BOUNCES, BOOK.MESSAGE_BOUNCES, "ReportRangeMessageContactBounces"),
 ]
 
 
