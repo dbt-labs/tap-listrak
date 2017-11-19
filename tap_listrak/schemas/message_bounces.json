@@ -18,13 +18,13 @@
         "string"
       ]
     },
-    "BounceReasons": {
+    "BounceReason": {
       "type": [
         "null",
         "string"
       ]
     },
-    "BounceDetails": {
+    "BounceDetail": {
       "type": [
         "null",
         "string"
