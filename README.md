@@ -15,6 +15,8 @@ This tap:
   - [Message Opens](https://webservices.listrak.com/v31/IntegrationService.asmx?op=ReportRangeMessageContactOpen)
   - [Message Reads](https://webservices.listrak.com/v31/IntegrationService.asmx?op=ReportRangeMessageContactRead)
   - [Message Sends](https://webservices.listrak.com/v31/IntegrationService.asmx?op=ReportMessageContactSent)
+  - [Message Bounces](https://webservices.listrak.com/v31/IntegrationService.asmx?op=ReportRangeMessageContactBounces)
+  - [Message Unsubscribes](https://webservices.listrak.com/v31/IntegrationService.asmx?op=ReportRangeMessageContactRemoval)
   - [Subscribed Contacts](https://webservices.listrak.com/v31/IntegrationService.asmx?op=ReportRangeSubscribedContacts)
 - Outputs the schema for each resource
 - Incrementally pulls data based on the input state
@@ -61,6 +63,8 @@ data fetched by the `lists` stream.
 
 Additionally, the `messages` stream must be selected for any of the `message_*`
 streams to function, as those streams depend on the data fetched by `messages`.
+
+`lists` and `messages` are selected by default.
 
 ## Notes on Bookmarking
 
