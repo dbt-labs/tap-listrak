@@ -22,6 +22,7 @@ def discover(ctx):
     for tap_stream_id in schemas.stream_ids:
         schema = Schema.from_dict(schemas.load_schema(tap_stream_id),
                                   inclusion="automatic")
+        schema.selected = True if tap_stream_id in ['lists', 'messages'] else False
         catalog.streams.append(CatalogEntry(
             stream=tap_stream_id,
             tap_stream_id=tap_stream_id,
