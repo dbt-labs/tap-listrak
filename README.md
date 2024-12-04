@@ -1,3 +1,15 @@
+# ***Archival Notice***
+This repository has been archived.
+
+As a result all of its historical issues and PRs have been closed.
+
+Please *do not clone* this repo without understanding the risk in doing so:
+- It may have unaddressed security vulnerabilities
+- It may have unaddressed bugs
+
+<details>
+   <summary>Click for historical readme</summary>
+
 # tap-listrak
 
 This is a [Singer](https://singer.io) tap that produces JSON-formatted data
@@ -34,9 +46,9 @@ This tap:
 
    ```json
    {
-     "start_date": "2010-01-01",
-     "username": "your-listrak-username",
-     "password": "your-listrak-password"
+     &quot;start_date&quot;: &quot;2010-01-01&quot;,
+     &quot;username&quot;: &quot;your-listrak-username&quot;,
+     &quot;password&quot;: &quot;your-listrak-password&quot;
    }
    ```
 
@@ -82,4 +94,5 @@ messages created before this `start_date` will not be synced.
 
 ---
 
-Copyright &copy; 2017 Fishtown Analytics
+Copyright &amp;copy; 2017 Fishtown Analytics
+
